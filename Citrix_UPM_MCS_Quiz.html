@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Citrix UPM & MCS Hard Quiz</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:#07090f;color:#dce4f0;
+  padding:28px 18px;
+}
+
+/* ── HEADER ── */
+.hdr{
+  text-align:center;padding:34px 22px;
+  background:linear-gradient(135deg,#0a0e1c,#10183a,#0a0e1c);
+  border-radius:20px;border:1px solid #1a2848;
+  margin-bottom:32px;position:relative;overflow:hidden;
+}
+.hdr::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,
+    rgba(99,102,241,.09) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hdr h1{
+  font-size:1.95rem;margin-bottom:9px;position:relative;
+  background:linear-gradient(90deg,#818cf8,#a78bfa,#818cf8);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hdr p{color:#6b7a96;font-size:.92rem;position:relative;}
+.badges{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:14px;position:relative;}
+.badge{
+  background:rgba(99,102,241,.12);
+  border:1px solid rgba(99,102,241,.35);
+  border-radius:20px;padding:4px 13px;
+  font-size:.78rem;color:#a78bfa;
+}
+.hard-pill{
+  display:inline-block;margin-top:13px;
+  background:linear-gradient(135deg,#6366f1,#4f46e5);
+  color:#fff;border-radius:20px;
+  padding:5px 22px;font-size:.8rem;
+  font-weight:700;letter-spacing:.06em;position:relative;
+}
+
+/* ── SCOREBOARD ── */
+.sb{display:flex;justify-content:center;gap:13px;flex-wrap:wrap;margin-bottom:26px;}
+.sb-box{
+  background:#0a0e1c;border:1px solid #1a2848;
+  border-radius:13px;padding:16px 22px;
+  text-align:center;min-width:100px;
+  transition:transform .2s;cursor:default;
+}
+.sb-box:hover{transform:translateY(-3px);}
+.sb-box .num{font-size:2rem;font-weight:900;}
+.sb-box .lbl{font-size:.68rem;color:#4a5a72;text-transform:uppercase;letter-spacing:.08em;margin-top:3px;}
+.sb-box.c .num{color:#34d399;}
+.sb-box.w .num{color:#f87171;}
+.sb-box.r .num{color:#fbbf24;}
+.sb-box.p .num{color:#818cf8;}
+
+/* ── PROGRESS ── */
+.plbl{text-align:center;color:#4a5a72;font-size:.76rem;margin-bottom:6px;max-width:890px;margin-left:auto;margin-right:auto;}
+.pwrap{max-width:890px;margin:0 auto 28px;background:#0a0e1c;border-radius:99px;height:12px;overflow:hidden;border:1px solid #1a2848;}
+.pfill{height:100%;background:linear-gradient(90deg,#6366f1,#a78bfa,#34d399);border-radius:99px;transition:width .5s ease;width:0%;}
+
+/* ── ALERT ── */
+.alert{
+  max-width:890px;margin:0 auto 28px;
+  background:rgba(251,191,36,.07);
+  border:1px solid rgba(251,191,36,.28);
+  border-radius:11px;padding:13px 18px;
+  font-size:.84rem;color:#fbbf24;
+  display:flex;gap:10px;align-items:flex-start;
+}
+
+/* ── TOPIC TABS ── */
+.topic-row{
+  display:flex;justify-content:center;
+  gap:12px;flex-wrap:wrap;
+  max-width:890px;margin:0 auto 30px;
+}
+.topic-tab{
+  padding:7px 18px;border-radius:20px;
+  font-size:.82rem;font-weight:700;
+  border:1px solid;cursor:default;
+}
+.t-upm{background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.35);color:#34d399;}
+.t-mcs{background:rgba(129,140,248,.1);border-color:rgba(129,140,248,.35);color:#818cf8;}
+
+/* ── SECTION ── */
+.sec-ttl{
+  max-width:890px;margin:44px auto 16px;
+  font-size:1rem;font-weight:700;
+  border-left:4px solid;padding-left:13px;
+}
+.sec-ttl.upm{color:#34d399;border-color:#34d399;}
+.sec-ttl.mcs{color:#818cf8;border-color:#818cf8;}
+
+/* ── CARD ── */
+.card{
+  background:#0a0e1c;border:1px solid #1a2848;
+  border-radius:15px;padding:24px;
+  margin:0 auto 18px;max-width:890px;
+  transition:border-color .3s,box-shadow .3s;
+  position:relative;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  border-radius:15px 15px 0 0;opacity:0;transition:opacity .3s;
+}
+.card.upm-card::before{background:linear-gradient(90deg,#34d399,#10b981);}
+.card.mcs-card::before{background:linear-gradient(90deg,#818cf8,#6366f1);}
+.card:hover::before{opacity:1;}
+.card.ok{border-color:#34d399;box-shadow:0 0 18px rgba(52,211,153,.13);}
+.card.ok::before{opacity:1;}
+.card.err{border-color:#f87171;box-shadow:0 0 18px rgba(248,113,113,.13);}
+.card.err::before{background:linear-gradient(90deg,#f87171,#ef4444)!important;opacity:1;}
+
+/* ── TOPIC BADGE ON CARD ── */
+.card-topic{
+  display:inline-block;border-radius:6px;
+  padding:2px 10px;font-size:.72rem;
+  font-weight:700;margin-bottom:10px;
+}
+.ct-upm{background:rgba(52,211,153,.15);color:#34d399;border:1px solid rgba(52,211,153,.3);}
+.ct-mcs{background:rgba(129,140,248,.15);color:#818cf8;border:1px solid rgba(129,140,248,.3);}
+
+/* ── DIFF ── */
+.diff-row{display:flex;align-items:center;gap:5px;margin-bottom:9px;}
+.dot{width:9px;height:9px;border-radius:50%;}
+.dot.on{background:#f87171;}
+.dot.off{background:#1a2848;}
+.diff-txt{font-size:.7rem;color:#4a5a72;margin-left:4px;}
+
+/* ── Q HEADER ── */
+.q-hdr{display:flex;align-items:flex-start;gap:13px;margin-bottom:18px;}
+.q-num{
+  color:#fff;font-weight:800;font-size:.78rem;
+  border-radius:8px;padding:5px 11px;
+  white-space:nowrap;margin-top:2px;
+  min-width:40px;text-align:center;flex-shrink:0;
+}
+.q-num.upm{background:linear-gradient(135deg,#059669,#34d399);box-shadow:0 2px 8px rgba(52,211,153,.3);}
+.q-num.mcs{background:linear-gradient(135deg,#4f46e5,#818cf8);box-shadow:0 2px 8px rgba(129,140,248,.3);}
+.q-txt{font-size:.96rem;line-height:1.65;color:#dce4f0;}
+
+/* ── OPTIONS ── */
+.opts{display:flex;flex-direction:column;gap:9px;}
+.opt{
+  background:#060810;border:1.5px solid #1a2848;
+  border-radius:10px;padding:11px 16px;
+  text-align:left;cursor:pointer;color:#9aa5b8;
+  font-size:.89rem;display:flex;align-items:center;
+  gap:12px;transition:all .18s ease;width:100%;
+}
+.opt:hover:not(:disabled){
+  background:#0d1530;border-color:#818cf8;
+  color:#fff;transform:translateX(4px);
+  box-shadow:0 4px 14px rgba(99,102,241,.15);
+}
+.opt:disabled{cursor:default;}
+.opt-l{
+  background:#1a2848;color:#4a5a72;
+  font-weight:800;border-radius:6px;
+  padding:2px 9px;font-size:.78rem;
+  min-width:30px;text-align:center;
+  flex-shrink:0;transition:all .2s;
+}
+.opt.correct{background:#031a0f;border-color:#34d399;color:#34d399;}
+.opt.correct .opt-l{background:#34d399;color:#031a0f;}
+.opt.wrong{background:#160808;border-color:#f87171;color:#f87171;}
+.opt.wrong .opt-l{background:#f87171;color:#fff;}
+.opt.reveal{background:#031a0f;border-color:#34d399;color:#6ee7b7;opacity:.8;}
+.opt.reveal .opt-l{background:#34d399;color:#031a0f;}
+
+/* ── FEEDBACK ── */
+.fb{margin-top:14px;font-size:.86rem;border-radius:10px;padding:13px 17px;display:none;line-height:1.6;}
+.fb-ok{background:#031a0f;border:1px solid #34d399;color:#6ee7b7;display:block;}
+.fb-err{background:#160808;border:1px solid #f87171;color:#fca5a5;display:block;}
+
+/* ── SUBMIT ── */
+.sub-wrap{text-align:center;margin:44px auto;}
+.sub-btn{
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);
+  color:#fff;border:none;border-radius:12px;
+  padding:15px 56px;font-size:1.03rem;
+  font-weight:700;cursor:pointer;
+  box-shadow:0 4px 20px rgba(99,102,241,.4);
+  transition:opacity .2s,transform .2s;
+  letter-spacing:.04em;
+}
+.sub-btn:hover{opacity:.87;transform:translateY(-2px);}
+
+/* ── RESULT ── */
+.result{
+  background:#0a0e1c;border:2px solid #818cf8;
+  border-radius:20px;padding:40px;
+  max-width:890px;margin:46px auto 40px;
+  text-align:center;display:none;
+  box-shadow:0 0 40px rgba(99,102,241,.18);
+}
+.result h2{
+  font-size:1.85rem;margin-bottom:14px;
+  background:linear-gradient(90deg,#818cf8,#34d399);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.big{
+  font-size:4.2rem;font-weight:900;margin:18px 0;
+  background:linear-gradient(135deg,#818cf8,#34d399);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.grade-txt{font-size:1.1rem;color:#6b7a96;margin-bottom:22px;}
+.stat-row{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:20px 0;}
+.stat{background:#060810;border:1px solid #1a2848;border-radius:13px;padding:15px 24px;min-width:105px;}
+.stat .sn{font-size:1.8rem;font-weight:800;}
+.stat .sl{font-size:.68rem;color:#4a5a72;text-transform:uppercase;}
+.stat.sc .sn{color:#34d399;}
+.stat.sw .sn{color:#f87171;}
+.stat.sp .sn{color:#818cf8;}
+
+.gtbl{width:100%;border-collapse:collapse;margin:20px 0;font-size:.86rem;}
+.gtbl th{background:#060810;color:#818cf8;padding:11px;border:1px solid #1a2848;}
+.gtbl td{padding:10px 13px;border:1px solid #1a2848;text-align:center;}
+.gtbl tr:hover td{background:#060810;}
+
+.rst-btn{
+  margin-top:24px;
+  background:linear-gradient(135deg,#059669,#10b981);
+  color:#fff;border:none;border-radius:11px;
+  padding:13px 38px;font-size:.98rem;
+  font-weight:700;cursor:pointer;
+  transition:opacity .2s,transform .2s;
+}
+.rst-btn:hover{opacity:.85;transform:translateY(-2px);}
+
+@media(max-width:600px){
+  .hdr h1{font-size:1.4rem;}
+  .sb-box{padding:11px 13px;min-width:78px;}
+  .big{font-size:2.9rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1>🧩 Citrix UPM &amp; MCS — Hard Technical Quiz</h1>
+  <p>Set 1 &nbsp;|&nbsp; Short &amp; Mixed Answers &nbsp;|&nbsp; Click to Check Instantly</p>
+  <div class="badges">
+    <span class="badge">📋 25 Questions</span>
+    <span class="badge">🟢 UPM Topics</span>
+    <span class="badge">🔵 MCS Topics</span>
+    <span class="badge">🔴 Hard Level</span>
+    <span class="badge">⚡ Instant Feedback</span>
+    <span class="badge">🔄 Restartable</span>
+  </div>
+  <div class="hard-pill">🔴 HARD — ADVANCED TECHNICAL LEVEL</div>
+</div>
+
+<!-- SCOREBOARD -->
+<div class="sb">
+  <div class="sb-box c"><div class="num" id="sc-c">0</div><div class="lbl">✅ Correct</div></div>
+  <div class="sb-box w"><div class="num" id="sc-w">0</div><div class="lbl">❌ Wrong</div></div>
+  <div class="sb-box r"><div class="num" id="sc-r">25</div><div class="lbl">⏳ Left</div></div>
+  <div class="sb-box p"><div class="num" id="sc-p">0%</div><div class="lbl">📊 Accuracy</div></div>
+</div>
+
+<!-- PROGRESS -->
+<p class="plbl" id="plbl">0 of 25 answered</p>
+<div class="pwrap"><div class="pfill" id="pbar"></div></div>
+
+<div class="alert">
+  ⚠️ <span><strong>Hard Level Rules:</strong>
+  All options are short &amp; technically similar.
+  Correct answers never mirror question keywords.
+  Select the single most technically accurate option per question.</span>
+</div>
+
+<!-- TOPIC LEGEND -->
+<div class="topic-row">
+  <span class="topic-tab t-upm">🟢 UPM = User Profile Management</span>
+  <span class="topic-tab t-mcs">🔵 MCS = Machine Creation Services</span>
+</div>
+
+<!-- QUIZ -->
+<div id="qwrap"></div>
+
+<!-- SUBMIT -->
+<div class="sub-wrap">
+  <button class="sub-btn" onclick="showRes()">🏁 Submit &amp; View Final Results</button>
+</div>
+
+<!-- RESULT -->
+<div class="result" id="res">
+  <h2>🏆 UPM &amp; MCS Hard Quiz Complete</h2>
+  <div class="big" id="fscore"></div>
+  <div class="grade-txt" id="fgrade"></div>
+  <div class="stat-row">
+    <div class="stat sc"><div class="sn" id="rc">0</div><div class="sl">✅ Correct</div></div>
+    <div class="stat sw"><div class="sn" id="rw">0</div><div class="sl">❌ Wrong</div></div>
+    <div class="stat sp"><div class="sn" id="rp">0%</div><div class="sl">📊 Score</div></div>
+  </div>
+  <table class="gtbl">
+    <thead>
+      <tr><th>Score</th><th>Level</th><th>Badge</th><th>Verdict</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>23–25</td><td>UPM/MCS Architect</td><td>🏆</td><td>Expert — train your team!</td></tr>
+      <tr><td>18–22</td><td>Senior Engineer</td><td>🥈</td><td>Strong — polish edge cases</td></tr>
+      <tr><td>12–17</td><td>Intermediate</td><td>🥉</td><td>Re-read technical docs</td></tr>
+      <tr><td>0–11</td><td>Beginner</td><td>📖</td><td>Study fundamentals carefully</td></tr>
+    </tbody>
+  </table>
+  <button class="rst-btn" onclick="reset()">🔄 Restart Quiz</button>
+</div>
+
+<script>
+const QS=[
+
+/* ════════ UPM SECTION 1: Files, Folders & Registry ════════ */
+{
+  sec:"🟢 UPM Section 1: Files, Folders & Registry (Q1–Q5)",
+  topic:"UPM",
+  q:"Which specific log file in the UPM installation directory should an administrator examine FIRST when diagnosing profile synchronization failures on a VDA?",
+  opts:["pm_configure.log","pm.log","pm_install.log","cpm.log"],
+  ans:1,diff:3,
+  exp:"pm.log is the primary Citrix Profile Management runtime log file. It records all profile synchronization events, errors, and processing steps. pm_configure.log covers policy application only, not runtime sync."
+},
+{
+  sec:null,topic:"UPM",
+  q:"What is the name of the Windows service that must be running on the VDA for Citrix Profile Management to process user profiles at logon and logoff?",
+  opts:["CitrixProfileSvc","Citrix Profile Management","Norskale Agent Host","User Profile Service"],
+  ans:1,diff:2,
+  exp:"The 'Citrix Profile Management' service (CtxProfile) must be running on the VDA. Without it, UPM policies are ignored and Windows uses the default roaming or local profile mechanism."
+},
+{
+  sec:null,topic:"UPM",
+  q:"UPM excludes certain folders by default to prevent bloat. Which file defines the built-in default exclusion list applied when no explicit policy override is configured?",
+  opts:["UserExclusions.xml","UPMPolicy.ini","pm_exclusions.txt","DefaultExclusions.reg"],
+  ans:1,diff:3,
+  exp:"UPMPolicy.ini (located in the UPM installation directory) contains the default exclusion list and policy templates. Administrators modify this file or use Group Policy ADMX to override individual exclusion settings."
+},
+{
+  sec:null,topic:"UPM",
+  q:"Which registry hive is loaded and synchronized by UPM to ensure user-specific registry settings persist across non-persistent VDA sessions?",
+  opts:["HKLM\\SOFTWARE\\Policies","HKCU (NTUSER.DAT)","HKLM\\SYSTEM","HKU\\.DEFAULT"],
+  ans:1,diff:2,
+  exp:"UPM synchronizes HKCU (HKEY_CURRENT_USER), which is stored in NTUSER.DAT within the user's profile folder. This hive contains all user-specific registry preferences and application settings."
+},
+{
+  sec:null,topic:"UPM",
+  q:"The UPM 'Active Write Back' (AWB) feature writes changed profile data back to the store during an active session. What is the default polling interval for AWB?",
+  opts:["1 minute","5 minutes","30 minutes","60 minutes"],
+  ans:2,diff:3,
+  exp:"Active Write Back uses a default polling interval of 30 minutes. It periodically flushes changed files and registry keys from the local profile to the network profile store mid-session — reducing data loss risk if a session terminates unexpectedly."
+},
+
+/* ════════ UPM SECTION 2: Profile Containers & Streaming ════════ */
+{
+  sec:"🟢 UPM Section 2: Profile Containers & Streaming (Q6–Q10)",
+  topic:"UPM",
+  q:"Citrix UPM Profile Container stores the full user profile in a VHD/VHDX file. Which SMB protocol version is the MINIMUM required for the file share hosting profile containers to support VHDX mounting?",
+  opts:["SMB 1.0","SMB 2.0","SMB 3.0","SMB 3.1.1"],
+  ans:2,diff:3,
+  exp:"SMB 3.0 is the minimum required version for hosting Citrix Profile Management VHDX-based profile containers. SMB 3.0 introduced persistent handles and transparent failover, which VHDX mounting over network shares depends upon."
+},
+{
+  sec:null,topic:"UPM",
+  q:"When Profile Streaming is enabled, UPM fetches profile files on demand rather than at logon. Which folder is always fetched COMPLETELY at logon regardless of streaming being active?",
+  opts:["Desktop","AppData\\Roaming","AppData\\Local\\Temp","Start Menu"],
+  ans:0,diff:3,
+  exp:"When Profile Streaming is active, the Desktop folder is always fully fetched at logon to ensure immediate usability. Other folders like AppData are streamed on-demand when first accessed. This is a fixed UPM behavior."
+},
+{
+  sec:null,topic:"UPM",
+  q:"A UPM profile container (VHDX) fails to mount because another session already has it attached. Which UPM fallback behavior handles this concurrent access scenario?",
+  opts:["Session terminates immediately","Falls back to local profile","Opens a read-only copy","Merges both VHDX instances"],
+  ans:1,diff:3,
+  exp:"When a UPM profile container VHDX is already mounted (concurrent session conflict), UPM falls back to the local profile for the new session. This prevents data corruption from simultaneous VHDX writes and maintains session continuity."
+},
+{
+  sec:null,topic:"UPM",
+  q:"The UPM 'Large File Handling' feature redirects large files to a network path instead of including them in the synchronized profile. What is the default file size threshold that triggers this redirection?",
+  opts:["5 MB","50 MB","256 MB","1 GB"],
+  ans:1,diff:3,
+  exp:"UPM Large File Handling uses a default threshold of 50 MB. Files exceeding this size are redirected via a symbolic link to a network share rather than being copied into the profile store, significantly reducing logon/logoff time."
+},
+{
+  sec:null,topic:"UPM",
+  q:"Which UPM policy, when enabled, prevents a corrupt or oversized profile in the store from overwriting a user's valid local profile on the VDA at logoff?",
+  opts:["Delete local cached profiles","Local profile conflict handling","Profile streaming exclusion","Always cache"],
+  ans:1,diff:3,
+  exp:"'Local profile conflict handling' policy defines UPM behavior when both a local and a network profile exist. Setting it appropriately prevents a newer but potentially corrupt store profile from overwriting a valid local copy."
+},
+
+/* ════════ UPM SECTION 3: Advanced Policies & Troubleshooting ════════ */
+{
+  sec:"🟢 UPM Section 3: Advanced Policies & Troubleshooting (Q11–Q13)",
+  topic:"UPM",
+  q:"An administrator enables UPM verbose logging for troubleshooting. Which numeric log level value enables the MAXIMUM verbosity including all trace-level events in pm.log?",
+  opts:["1","2","3","4"],
+  ans:2,diff:3,
+  exp:"UPM log level 3 enables maximum verbosity, capturing all events including detailed trace-level operations, file system events, and registry synchronization steps. Level 1 = errors only, Level 2 = informational."
+},
+{
+  sec:null,topic:"UPM",
+  q:"UPM uses a specific file as a 'lock' marker to detect whether a profile is currently in use by an active session. What is the name of this lock file created in the user store?",
+  opts:["profile.lock","!ctx_profile.lock","session.lck","ntuser.lock"],
+  ans:1,diff:3,
+  exp:"UPM creates '!ctx_profile.lock' in the user store folder to indicate an active profile session. Stale lock files (left from crashed sessions) can prevent profile synchronization and must be manually cleared."
+},
+{
+  sec:null,topic:"UPM",
+  q:"Which UPM feature, when enabled, automatically removes a local cached profile from the VDA disk after the user logs off — freeing disk space on shared session hosts?",
+  opts:["Profile streaming","Active Write Back","Delete locally cached profiles on logoff","Large file handling"],
+  ans:2,diff:2,
+  exp:"The 'Delete locally cached profiles on logoff' policy instructs UPM to remove the local profile copy from the VDA after the user logs off and synchronization completes, reclaiming disk space on shared multi-session hosts."
+},
+
+/* ════════ MCS SECTION 1: Disk Architecture & Identity ════════ */
+{
+  sec:"🔵 MCS Section 1: Disk Architecture & Identity (Q14–Q18)",
+  topic:"MCS",
+  q:"MCS attaches a small disk to each provisioned VM to maintain a unique Active Directory identity. What is the EXACT default size of this disk?",
+  opts:["4 MB","16 MB","128 MB","512 MB"],
+  ans:1,diff:3,
+  exp:"The MCS Identity Disk is exactly 16 MB. It stores the machine SID, AD computer account credentials, and machine name — giving each VM cloned from the same master image a unique identity in Active Directory."
+},
+{
+  sec:null,topic:"MCS",
+  q:"In MCS, the preparation VM created during catalog provisioning is used for a specific one-time task. What does this temporary VM do before it is automatically deleted?",
+  opts:["Installs the VDA agent","Runs SID generalization via sysprep","Generates the master image snapshot","Creates the AD computer account OU"],
+  ans:1,diff:3,
+  exp:"The MCS preparation VM boots from the master image, runs a mini-SID generalization process (without full Sysprep) to strip machine-unique identifiers, then shuts down. MCS captures a clean differencing disk from this prepared state before deleting the prep VM."
+},
+{
+  sec:null,topic:"MCS",
+  q:"Which PowerShell cmdlet is used to create a new MCS Machine Catalog in Citrix DaaS / CVAD programmatically?",
+  opts:["Add-BrokerMachineCatalog","New-BrokerCatalog","New-ProvScheme","Set-ProvScheme"],
+  ans:2,diff:3,
+  exp:"New-ProvScheme creates the MCS provisioning scheme (catalog definition) including the master image, identity pool, and storage settings. New-BrokerCatalog then registers this scheme as a broker-visible catalog. New-ProvScheme is the foundational MCS catalog creation cmdlet."
+},
+{
+  sec:null,topic:"MCS",
+  q:"In Azure-hosted MCS catalogs, which disk storage tier provides the lowest per-operation cost and is suitable only for dev/test non-persistent catalogs with low IOPS requirements?",
+  opts:["Ultra Disk","Premium SSD","Standard SSD","Standard HDD"],
+  ans:3,diff:3,
+  exp:"Azure Standard HDD offers the lowest per-operation cost and is suitable only for light-workload dev/test MCS VMs. Production non-persistent VDI requires at minimum Standard SSD; high-density session hosts need Premium SSD or Ultra Disk."
+},
+{
+  sec:null,topic:"MCS",
+  q:"MCS in 'Thin Clone' mode uses a differencing disk architecture. What is the base read-only disk called that ALL provisioned VMs in the catalog share simultaneously?",
+  opts:["Identity Disk","Write-Back Cache Disk","Master Image Replica Disk","Snapshot Delta Disk"],
+  ans:2,diff:3,
+  exp:"The Master Image Replica Disk is the shared, read-only base disk in MCS Thin Clone catalogs. All provisioned VMs read unchanged OS blocks from this single replica. Write operations go to each VM's own differencing (delta) disk, not the replica."
+},
+
+/* ════════ MCS SECTION 2: WBC, Rollout & Snapshots ════════ */
+{
+  sec:"🔵 MCS Section 2: WBC, Rollout & Snapshots (Q19–Q22)",
+  topic:"MCS",
+  q:"When MCS Write-Back Cache overflows its in-memory buffer, it spills to the WBC disk. What is the DEFAULT in-memory cache buffer size allocated per VM before disk spillover occurs?",
+  opts:["16 MB","256 MB","512 MB","1 GB"],
+  ans:1,diff:3,
+  exp:"The default MCS Write-Back Cache in-memory buffer is 256 MB per VM. Writes accumulate in RAM first; only when this 256 MB threshold is exceeded does MCS spill overflow writes to the WBC disk — minimizing disk I/O for typical workloads."
+},
+{
+  sec:null,topic:"MCS",
+  q:"After an MCS image update via 'Rollout', machines that still have active user sessions will receive the new image at which point?",
+  opts:["Immediately via live migration","On next scheduled maintenance window","After the session ends and VM reboots","After 72 hours regardless of session state"],
+  ans:2,diff:2,
+  exp:"MCS Rollout schedules the image update to apply at the VM's next reboot. If a session is active, the VM is not force-restarted — it receives the updated image only after the session naturally ends and the VM reboots (or is restarted by the admin)."
+},
+{
+  sec:null,topic:"MCS",
+  q:"Which PowerShell cmdlet publishes an updated master image snapshot to an existing MCS provisioning scheme, making it ready for Rollout to catalog machines?",
+  opts:["Update-BrokerCatalog","Set-ProvScheme","Publish-ProvMasterVMImage","Set-BrokerMachineMaintenanceMode"],
+  ans:2,diff:3,
+  exp:"Publish-ProvMasterVMImage updates the provisioning scheme with the new master image snapshot. This cmdlet stages the new image within MCS. The subsequent 'Rollout' action (via Web Studio or Update-BrokerCatalog) then schedules delivery to individual machines."
+},
+{
+  sec:null,topic:"MCS",
+  q:"In MCS on VMware vSphere, what vSphere object does MCS require read access to in order to enumerate available datastores and networks during catalog creation?",
+  opts:["vCenter Datacenter object","ESXi host BIOS","vSAN witness node","NSX Manager API"],
+  ans:0,diff:3,
+  exp:"MCS requires a vCenter service account with at least read access to the Datacenter object (and its child objects — clusters, datastores, networks) to enumerate available resources during Machine Catalog creation wizards in Web Studio."
+},
+
+/* ════════ MCS SECTION 3: Catalog Types & Advanced ════════ */
+{
+  sec:"🔵 MCS Section 3: Catalog Types & Advanced Operations (Q23–Q25)",
+  topic:"MCS",
+  q:"Which MCS catalog type preserves ALL user-installed applications and data changes across VM reboots, functioning like a traditional persistent workstation?",
+  opts:["Random (non-persistent)","Static (persistent)","Pooled-static","Temporary clone"],
+  ans:1,diff:2,
+  exp:"MCS Static (persistent) catalogs assign each user permanently to a specific VM. The VM's disk is a full independent clone that retains all changes across reboots — equivalent to a physical workstation, unlike pooled non-persistent catalogs that reset on reboot."
+},
+{
+  sec:null,topic:"MCS",
+  q:"What MCS-specific PowerShell cmdlet retrieves the current provisioning scheme details — including the master image path, identity pool, and allocated disk size — for an existing catalog?",
+  opts:["Get-BrokerCatalog","Get-ProvTask","Get-ProvScheme","Get-AcctIdentityPool"],
+  ans:2,diff:3,
+  exp:"Get-ProvScheme retrieves the full provisioning scheme configuration for an MCS catalog, including master image snapshot path, CPU/RAM allocation, disk size, storage, and network settings. Get-BrokerCatalog returns brokering metadata only."
+},
+{
+  sec:null,topic:"MCS",
+  q:"In an MCS non-persistent catalog on Nutanix AHV, which storage feature does Citrix MCS exploit to create linked clone VMs rapidly without full disk duplication?",
+  opts:["Volume groups","Storage snapshots via AHV API","AHV live migration","Nutanix Files SMB share"],
+  ans:1,diff:3,
+  exp:"MCS on Nutanix AHV uses AHV's native storage snapshot API (via the Nutanix plug-in) to create linked clone VMs instantly from the master image snapshot — analogous to VMware linked clones but using Nutanix's own copy-on-write snapshot mechanism."
+}
+
+];
+
+/* ── State ── */
+let cC=0,wC=0,aC=0;
+const TOT=QS.length,LBL=['A','B','C','D'];
+
+/* ── Build ── */
+function build(){
+  const w=document.getElementById('qwrap');
+  w.innerHTML='';
+  let ls='',qNum=0;
+
+  QS.forEach((q,i)=>{
+    qNum++;
+    const isUPM=q.topic==='UPM';
+    const secClass=isUPM?'upm':'mcs';
+
+    if(q.sec){
+      ls=q.sec;
+      const s=document.createElement('div');
+      s.className=`sec-ttl ${secClass}`;
+      s.textContent=q.sec;
+      w.appendChild(s);
+    }
+
+    const card=document.createElement('div');
+    card.className=`card ${isUPM?'upm-card':'mcs-card'}`;
+    card.id='c'+i;
+
+    /* Topic badge */
+    const tb=`<span class="card-topic ${isUPM?'ct-upm':'ct-mcs'}">${isUPM?'🟢 UPM':'🔵 MCS'}</span>`;
+
+    /* Diff dots */
+    let dd='';
+    for(let d=1;d<=3;d++) dd+=`<span class="dot ${d<=q.diff?'on':'off'}"></span>`;
+    const dr=`<div class="diff-row">${dd}<span class="diff-txt">🔴 Hard</span></div>`;
+
+    const hdr=document.createElement('div');
+    hdr.className='q-hdr';
+    hdr.innerHTML=`<span class="q-num ${secClass}">Q${qNum}</span>
+    <div style="flex:1">${tb}${dr}<span class="q-txt">${q.q}</span></div>`;
+
+    const ow=document.createElement('div');
+    ow.className='opts';
+    q.opts.forEach((o,j)=>{
+      const b=document.createElement('button');
+      b.className='opt';b.id=`q${i}o${j}`;
+      b.innerHTML=`<span class="opt-l">${LBL[j]}</span>${o}`;
+      b.onclick=()=>pick(i,j);
+      ow.appendChild(b);
+    });
+
+    const fb=document.createElement('div');
+    fb.className='fb';fb.id='fb'+i;
+
+    card.appendChild(hdr);
+    card.appendChild(ow);
+    card.appendChild(fb);
+    w.appendChild(card);
+  });
+}
+
+/* ── Pick ── */
+function pick(qi,oi){
+  const q=QS[qi];
+  q.opts.forEach((_,k)=>{
+    document.getElementById(`q${qi}o${k}`).disabled=true;
+  });
+  const sel=document.getElementById(`q${qi}o${oi}`);
+  const cor=document.getElementById(`q${qi}o${q.ans}`);
+  const fb=document.getElementById('fb'+qi);
+  const card=document.getElementById('c'+qi);
+  aC++;
+  if(oi===q.ans){
+    sel.classList.add('correct');card.classList.add('ok');
+    fb.className='fb fb-ok';
+    fb.innerHTML=`✅ <strong>Correct!</strong> — ${q.exp}`;
+    cC++;
+  } else {
+    sel.classList.add('wrong');cor.classList.add('reveal');
+    card.classList.add('err');
+    fb.className='fb fb-err';
+    fb.innerHTML=`❌ <strong>Wrong.</strong> Answer: <strong>${LBL[q.ans]}) ${q.opts[q.ans]}</strong><br><br>💡 ${q.exp}`;
+    wC++;
+  }
+  hud();
+}
+
+/* ── HUD ── */
+function hud(){
+  document.getElementById('sc-c').textContent=cC;
+  document.getElementById('sc-w').textContent=wC;
+  document.getElementById('sc-r').textContent=TOT-aC;
+  const pct=aC?Math.round(cC/aC*100):0;
+  document.getElementById('sc-p').textContent=pct+'%';
+  const pp=Math.round(aC/TOT*100);
+  document.getElementById('pbar').style.width=pp+'%';
+  document.getElementById('plbl').textContent=
+    `${aC} of ${TOT} answered  •  ${pp}% complete`;
+}
+
+/* ── Results ── */
+function showRes(){
+  const p=document.getElementById('res');
+  p.style.display='block';
+  p.scrollIntoView({behavior:'smooth'});
+  const pct=Math.round(cC/TOT*100);
+  document.getElementById('fscore').textContent=`${cC} / ${TOT}`;
+  document.getElementById('rc').textContent=cC;
+  document.getElementById('rw').textContent=wC;
+  document.getElementById('rp').textContent=pct+'%';
+  let g='';
+  if(cC>=23)      g='🏆 UPM/MCS Architect — Exceptional mastery!';
+  else if(cC>=18) g='🥈 Senior Engineer — Strong technical depth!';
+  else if(cC>=12) g='🥉 Intermediate — Review UPM & MCS docs.';
+  else             g='📖 Beginner — Study fundamentals carefully.';
+  document.getElementById('fgrade').textContent=g;
+}
+
+/* ── Reset ── */
+function reset(){
+  cC=wC=aC=0;
+  document.getElementById('res').style.display='none';
+  hud();build();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+build();
+</script>
+</body>
+</html>
