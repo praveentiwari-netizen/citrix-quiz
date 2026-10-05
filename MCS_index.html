@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Citrix VDA Auth & Session Quiz</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:#06080f;color:#dce6f5;
+  padding:28px 18px;
+}
+
+/* ── HEADER ── */
+.hdr{
+  text-align:center;padding:34px 22px;
+  background:linear-gradient(135deg,#080d1e,#0f1a38,#080d1e);
+  border-radius:20px;border:1px solid #162040;
+  margin-bottom:32px;position:relative;overflow:hidden;
+}
+.hdr::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,
+    rgba(14,165,233,.09) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hdr h1{
+  font-size:1.9rem;margin-bottom:9px;position:relative;
+  background:linear-gradient(90deg,#38bdf8,#7dd3fc,#38bdf8);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hdr p{color:#64748b;font-size:.92rem;position:relative;}
+.badges{
+  display:flex;justify-content:center;
+  flex-wrap:wrap;gap:9px;margin-top:14px;position:relative;
+}
+.badge{
+  background:rgba(56,189,248,.1);
+  border:1px solid rgba(56,189,248,.3);
+  border-radius:20px;padding:4px 13px;
+  font-size:.78rem;color:#7dd3fc;
+}
+.hard-pill{
+  display:inline-block;margin-top:13px;
+  background:linear-gradient(135deg,#0ea5e9,#0284c7);
+  color:#fff;border-radius:20px;
+  padding:5px 22px;font-size:.8rem;
+  font-weight:700;letter-spacing:.06em;position:relative;
+}
+
+/* ── TOPIC LEGEND ── */
+.legend{
+  display:flex;justify-content:center;
+  gap:10px;flex-wrap:wrap;
+  max-width:920px;margin:0 auto 28px;
+}
+.leg-tab{
+  padding:6px 16px;border-radius:20px;
+  font-size:.78rem;font-weight:700;border:1px solid;
+}
+.l1{background:rgba(251,146,60,.1);border-color:rgba(251,146,60,.35);color:#fb923c;}
+.l2{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.35);color:#a78bfa;}
+.l3{background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.35);color:#34d399;}
+.l4{background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.35);color:#f87171;}
+
+/* ── SCOREBOARD ── */
+.sb{
+  display:flex;justify-content:center;
+  gap:13px;flex-wrap:wrap;margin-bottom:26px;
+}
+.sb-box{
+  background:#080d1e;border:1px solid #162040;
+  border-radius:13px;padding:16px 22px;
+  text-align:center;min-width:100px;
+  transition:transform .2s;cursor:default;
+}
+.sb-box:hover{transform:translateY(-3px);}
+.sb-box .num{font-size:2rem;font-weight:900;}
+.sb-box .lbl{
+  font-size:.68rem;color:#3d5068;
+  text-transform:uppercase;letter-spacing:.08em;margin-top:3px;
+}
+.sb-box.c .num{color:#34d399;}
+.sb-box.w .num{color:#f87171;}
+.sb-box.r .num{color:#fbbf24;}
+.sb-box.p .num{color:#38bdf8;}
+
+/* ── PROGRESS ── */
+.plbl{
+  text-align:center;color:#3d5068;font-size:.76rem;
+  margin-bottom:6px;max-width:920px;
+  margin-left:auto;margin-right:auto;
+}
+.pwrap{
+  max-width:920px;margin:0 auto 28px;
+  background:#080d1e;border-radius:99px;
+  height:12px;overflow:hidden;border:1px solid #162040;
+}
+.pfill{
+  height:100%;
+  background:linear-gradient(90deg,#0ea5e9,#a78bfa,#34d399);
+  border-radius:99px;transition:width .5s ease;width:0%;
+}
+
+/* ── ALERT ── */
+.alert{
+  max-width:920px;margin:0 auto 26px;
+  background:rgba(251,191,36,.07);
+  border:1px solid rgba(251,191,36,.28);
+  border-radius:11px;padding:13px 18px;
+  font-size:.84rem;color:#fbbf24;
+  display:flex;gap:10px;align-items:flex-start;
+}
+
+/* ── SECTION TITLE ── */
+.sec-ttl{
+  max-width:920px;margin:44px auto 16px;
+  font-size:1rem;font-weight:700;
+  padding-left:14px;border-left:4px solid;
+}
+.s1{color:#fb923c;border-color:#fb923c;}
+.s2{color:#a78bfa;border-color:#a78bfa;}
+.s3{color:#34d399;border-color:#34d399;}
+.s4{color:#f87171;border-color:#f87171;}
+
+/* ── CARD ── */
+.card{
+  background:#080d1e;border:1px solid #162040;
+  border-radius:15px;padding:24px;
+  margin:0 auto 18px;max-width:920px;
+  transition:border-color .3s,box-shadow .3s;
+  position:relative;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:3px;border-radius:15px 15px 0 0;
+  opacity:0;transition:opacity .3s;
+}
+.card:hover::before{opacity:1;}
+.c1::before{background:linear-gradient(90deg,#fb923c,#f97316);}
+.c2::before{background:linear-gradient(90deg,#a78bfa,#8b5cf6);}
+.c3::before{background:linear-gradient(90deg,#34d399,#10b981);}
+.c4::before{background:linear-gradient(90deg,#f87171,#ef4444);}
+.card.ok{border-color:#34d399;box-shadow:0 0 18px rgba(52,211,153,.12);}
+.card.ok::before{opacity:1;background:linear-gradient(90deg,#34d399,#10b981)!important;}
+.card.err{border-color:#f87171;box-shadow:0 0 18px rgba(248,113,113,.12);}
+.card.err::before{opacity:1;background:linear-gradient(90deg,#f87171,#ef4444)!important;}
+
+/* ── TOPIC PILL ON CARD ── */
+.cpill{
+  display:inline-block;border-radius:6px;
+  padding:2px 10px;font-size:.72rem;
+  font-weight:700;margin-bottom:10px;border:1px solid;
+}
+.cp1{background:rgba(251,146,60,.12);color:#fb923c;border-color:rgba(251,146,60,.3);}
+.cp2{background:rgba(167,139,250,.12);color:#a78bfa;border-color:rgba(167,139,250,.3);}
+.cp3{background:rgba(52,211,153,.12);color:#34d399;border-color:rgba(52,211,153,.3);}
+.cp4{background:rgba(248,113,113,.12);color:#f87171;border-color:rgba(248,113,113,.3);}
+
+/* ── DIFF ── */
+.diff-row{display:flex;align-items:center;gap:5px;margin-bottom:9px;}
+.dot{width:9px;height:9px;border-radius:50%;}
+.dot.on{background:#f87171;}
+.dot.off{background:#162040;}
+.diff-txt{font-size:.7rem;color:#3d5068;margin-left:4px;}
+
+/* ── Q HEADER ── */
+.q-hdr{display:flex;align-items:flex-start;gap:13px;margin-bottom:18px;}
+.q-num{
+  color:#fff;font-weight:800;font-size:.78rem;
+  border-radius:8px;padding:5px 11px;
+  white-space:nowrap;margin-top:2px;
+  min-width:40px;text-align:center;flex-shrink:0;
+}
+.n1{background:linear-gradient(135deg,#c2410c,#fb923c);box-shadow:0 2px 8px rgba(251,146,60,.3);}
+.n2{background:linear-gradient(135deg,#6d28d9,#a78bfa);box-shadow:0 2px 8px rgba(167,139,250,.3);}
+.n3{background:linear-gradient(135deg,#065f46,#34d399);box-shadow:0 2px 8px rgba(52,211,153,.3);}
+.n4{background:linear-gradient(135deg,#991b1b,#f87171);box-shadow:0 2px 8px rgba(248,113,113,.3);}
+.q-txt{font-size:.96rem;line-height:1.65;color:#dce6f5;}
+
+/* ── OPTIONS ── */
+.opts{display:flex;flex-direction:column;gap:9px;}
+.opt{
+  background:#05080e;border:1.5px solid #162040;
+  border-radius:10px;padding:11px 16px;
+  text-align:left;cursor:pointer;color:#8fa3b8;
+  font-size:.89rem;display:flex;align-items:center;
+  gap:12px;transition:all .18s ease;width:100%;
+}
+.opt:hover:not(:disabled){
+  background:#0c1830;border-color:#38bdf8;
+  color:#fff;transform:translateX(4px);
+  box-shadow:0 4px 14px rgba(14,165,233,.12);
+}
+.opt:disabled{cursor:default;}
+.opt-l{
+  background:#162040;color:#3d5068;
+  font-weight:800;border-radius:6px;
+  padding:2px 9px;font-size:.78rem;
+  min-width:30px;text-align:center;
+  flex-shrink:0;transition:all .2s;
+}
+.opt.correct{background:#03140d;border-color:#34d399;color:#34d399;}
+.opt.correct .opt-l{background:#34d399;color:#03140d;}
+.opt.wrong{background:#140505;border-color:#f87171;color:#f87171;}
+.opt.wrong .opt-l{background:#f87171;color:#fff;}
+.opt.reveal{background:#03140d;border-color:#34d399;color:#6ee7b7;opacity:.8;}
+.opt.reveal .opt-l{background:#34d399;color:#03140d;}
+
+/* ── FEEDBACK ── */
+.fb{
+  margin-top:14px;font-size:.86rem;
+  border-radius:10px;padding:13px 17px;
+  display:none;line-height:1.6;
+}
+.fb-ok{background:#03140d;border:1px solid #34d399;color:#6ee7b7;display:block;}
+.fb-err{background:#140505;border:1px solid #f87171;color:#fca5a5;display:block;}
+
+/* ── SUBMIT ── */
+.sub-wrap{text-align:center;margin:44px auto;}
+.sub-btn{
+  background:linear-gradient(135deg,#0ea5e9,#0284c7);
+  color:#fff;border:none;border-radius:12px;
+  padding:15px 56px;font-size:1.03rem;
+  font-weight:700;cursor:pointer;
+  box-shadow:0 4px 20px rgba(14,165,233,.35);
+  transition:opacity .2s,transform .2s;
+  letter-spacing:.04em;
+}
+.sub-btn:hover{opacity:.87;transform:translateY(-2px);}
+
+/* ── RESULT ── */
+.result{
+  background:#080d1e;border:2px solid #38bdf8;
+  border-radius:20px;padding:40px;
+  max-width:920px;margin:46px auto 40px;
+  text-align:center;display:none;
+  box-shadow:0 0 40px rgba(14,165,233,.15);
+}
+.result h2{
+  font-size:1.85rem;margin-bottom:14px;
+  background:linear-gradient(90deg,#38bdf8,#34d399);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.big{
+  font-size:4.2rem;font-weight:900;margin:18px 0;
+  background:linear-gradient(135deg,#38bdf8,#a78bfa,#34d399);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.grade-txt{font-size:1.1rem;color:#64748b;margin-bottom:22px;}
+.stat-row{
+  display:flex;justify-content:center;
+  gap:18px;flex-wrap:wrap;margin:20px 0;
+}
+.stat{
+  background:#05080e;border:1px solid #162040;
+  border-radius:13px;padding:15px 24px;min-width:105px;
+}
+.stat .sn{font-size:1.8rem;font-weight:800;}
+.stat .sl{font-size:.68rem;color:#3d5068;text-transform:uppercase;}
+.stat.sc .sn{color:#34d399;}
+.stat.sw .sn{color:#f87171;}
+.stat.sp .sn{color:#38bdf8;}
+
+.gtbl{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:.86rem;
+}
+.gtbl th{
+  background:#05080e;color:#38bdf8;
+  padding:11px;border:1px solid #162040;
+}
+.gtbl td{padding:10px 13px;border:1px solid #162040;text-align:center;}
+.gtbl tr:hover td{background:#05080e;}
+
+.rst-btn{
+  margin-top:24px;
+  background:linear-gradient(135deg,#0ea5e9,#a78bfa);
+  color:#fff;border:none;border-radius:11px;
+  padding:13px 38px;font-size:.98rem;
+  font-weight:700;cursor:pointer;
+  transition:opacity .2s,transform .2s;
+}
+.rst-btn:hover{opacity:.85;transform:translateY(-2px);}
+
+@media(max-width:600px){
+  .hdr h1{font-size:1.4rem;}
+  .sb-box{padding:11px 13px;min-width:78px;}
+  .big{font-size:2.9rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1>🖥️ Citrix VDA Reg · Auth · Enum · Session Launch</h1>
+  <p>Hard Technical Quiz &nbsp;|&nbsp; Short Mixed Answers &nbsp;|&nbsp; Click to Check Instantly</p>
+  <div class="badges">
+    <span class="badge">📋 25 Questions</span>
+    <span class="badge">🟠 VDA Registration</span>
+    <span class="badge">🟣 Authentication</span>
+    <span class="badge">🟢 Enumeration</span>
+    <span class="badge">🔴 Session Launch</span>
+    <span class="badge">🔴 Hard Level</span>
+    <span class="badge">⚡ Instant Feedback</span>
+  </div>
+  <div class="hard-pill">🔴 ADVANCED TECHNICAL — HARD LEVEL</div>
+</div>
+
+<!-- SCOREBOARD -->
+<div class="sb">
+  <div class="sb-box c"><div class="num" id="sc-c">0</div><div class="lbl">✅ Correct</div></div>
+  <div class="sb-box w"><div class="num" id="sc-w">0</div><div class="lbl">❌ Wrong</div></div>
+  <div class="sb-box r"><div class="num" id="sc-r">25</div><div class="lbl">⏳ Left</div></div>
+  <div class="sb-box p"><div class="num" id="sc-p">0%</div><div class="lbl">📊 Accuracy</div></div>
+</div>
+
+<!-- PROGRESS -->
+<p class="plbl" id="plbl">0 of 25 answered</p>
+<div class="pwrap"><div class="pfill" id="pbar"></div></div>
+
+<div class="alert">
+  ⚠️ <span><strong>Hard Level Rules:</strong>
+  All options are short &amp; technically similar.
+  No question keywords appear in the correct answer.
+  One technically precise option per question — choose carefully.</span>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <span class="leg-tab l1">🟠 VDA Registration</span>
+  <span class="leg-tab l2">🟣 Authentication</span>
+  <span class="leg-tab l3">🟢 Enumeration</span>
+  <span class="leg-tab l4">🔴 Session Launch</span>
+</div>
+
+<!-- QUIZ -->
+<div id="qwrap"></div>
+
+<!-- SUBMIT -->
+<div class="sub-wrap">
+  <button class="sub-btn" onclick="showRes()">
+    🏁 Submit &amp; View Final Results
+  </button>
+</div>
+
+<!-- RESULT -->
+<div class="result" id="res">
+  <h2>🏆 VDA · Auth · Enum · Launch — Quiz Complete</h2>
+  <div class="big" id="fscore"></div>
+  <div class="grade-txt" id="fgrade"></div>
+  <div class="stat-row">
+    <div class="stat sc"><div class="sn" id="rc">0</div><div class="sl">✅ Correct</div></div>
+    <div class="stat sw"><div class="sn" id="rw">0</div><div class="sl">❌ Wrong</div></div>
+    <div class="stat sp"><div class="sn" id="rp">0%</div><div class="sl">📊 Score</div></div>
+  </div>
+  <table class="gtbl">
+    <thead>
+      <tr><th>Score</th><th>Level</th><th>Badge</th><th>Verdict</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>23–25</td><td>Citrix Architect</td><td>🏆</td><td>Expert — train your team!</td></tr>
+      <tr><td>18–22</td><td>Senior Engineer</td><td>🥈</td><td>Solid — refine edge cases</td></tr>
+      <tr><td>12–17</td><td>Intermediate</td><td>🥉</td><td>Re-read technical docs</td></tr>
+      <tr><td>0–11</td><td>Beginner</td><td>📖</td><td>Study Citrix fundamentals</td></tr>
+    </tbody>
+  </table>
+  <button class="rst-btn" onclick="reset()">🔄 Restart Quiz</button>
+</div>
+
+<script>
+const QS=[
+
+/* ════ SECTION 1: VDA REGISTRATION ════ */
+{
+  sec:"🟠 Section 1: VDA Registration (Q1–Q7)",
+  sc:"s1",cp:"cp1",nc:"n1",cc:"c1",
+  q:"A VDA fails to register with the Delivery Controller. The VDA event log shows error code 1012. Which Windows service must be verified as running FIRST on that VDA?",
+  opts:["Citrix WMI Service","Citrix Broker Agent","Print Spooler","Windows Firewall"],
+  ans:1,
+  exp:"The Citrix Broker Agent (BrokerAgent.exe) is the core VDA service responsible for registering with Delivery Controllers. Error 1012 indicates it cannot establish a registration channel. This service must be running before any other check."
+},
+{sec:null,sc:"s1",cp:"cp1",nc:"n1",cc:"c1",
+  q:"VDA registration uses a specific TCP port to communicate with the Delivery Controller's broker service. What is this port?",
+  opts:["TCP 443","TCP 80","TCP 8080","TCP 1494"],
+  ans:2,
+  exp:"VDA-to-DDC broker registration communication uses TCP 8080. This is the port the Citrix Broker Service listens on for VDA registration requests. TCP 1494 is for ICA sessions, not registration."
+},
+{sec:null,sc:"s1",cp:"cp1",nc:"n1",cc:"c1",
+  q:"Which configuration file on the VDA explicitly defines the list of Delivery Controllers the VDA should attempt to register with?",
+  opts:["brokerservice.exe.config","ListOfDDCs.reg","ListOfDDCs.xml","Citrix.ini"],
+  ans:2,
+  exp:"ListOfDDCs.xml (located in C:\\Program Files\\Citrix\\Virtual Desktop Agent\\) stores the list of Delivery Controllers configured for VDA registration. It is written during installation or updated via Group Policy."
+},
+{sec:null,sc:"s1",cp:"cp1",nc:"n1",cc:"c1",
+  q:"When VDA auto-update of the DDC list is enabled, which DNS SRV record does the VDA query to discover Delivery Controllers automatically?",
+  opts:["_citrixddc._tcp","_ldap._tcp","_xdservice._tcp","_citrix._udp"],
+  ans:0,
+  exp:"The VDA queries the DNS SRV record _citrixddc._tcp.domain.com to auto-discover Delivery Controllers when the controller list is not explicitly configured. This enables zero-touch VDA-to-DDC discovery in large environments."
+},
+{sec:null,sc:"s1",cp:"cp1",nc:"n1",cc:"c1",
+  q:"What is the default VDA registration timeout period — after which the VDA is marked 'Unregistered' if it has not successfully contacted a Delivery Controller?",
+  opts:["30 seconds","60 seconds","5 minutes","15 minutes"],
+  ans:2,
+  exp:"The default VDA registration timeout is 5 minutes. If the VDA cannot successfully register with any Delivery Controller within this window, it transitions to the 'Unregistered' state and is unavailable for brokering."
+},
+{sec:null,sc:"s1",cp:"cp1",nc:"n1",cc:"c1",
+  q:"In Citrix DaaS, the Cloud Connector replaces the on-premises DDC for VDA registration. Over which port does the VDA register with the Cloud Connector?",
+  opts:["TCP 443","TCP 8080","TCP 2598","TCP 1494"],
+  ans:1,
+  exp:"In DaaS, VDAs register with the Cloud Connector over TCP 8080 — identical to on-premises DDC registration. The Cloud Connector then relays registration data to the Citrix Cloud control plane over outbound HTTPS (TCP 443)."
+},
+{sec:null,sc:"s1",cp:"cp1",nc:"n1",cc:"c1",
+  q:"A VDA shows 'Initializing' state and never progresses to 'Registered'. The Citrix Broker Agent starts but immediately stops. Which Windows prerequisite is MOST likely missing on that machine?",
+  opts:[".NET Framework 4.8","Visual C++ Redistributable 2019","Microsoft Edge WebView2","Windows Installer 4.5"],
+  ans:0,
+  exp:".NET Framework 4.8 is a mandatory prerequisite for the Citrix Broker Agent (BrokerAgent.exe). If it is missing or corrupted, BrokerAgent fails to initialize after starting, causing the VDA to remain stuck in the 'Initializing' state."
+},
+
+/* ════ SECTION 2: AUTHENTICATION ════ */
+{
+  sec:"🟣 Section 2: Citrix Authentication (Q8–Q14)",
+  sc:"s2",cp:"cp2",nc:"n2",cc:"c2",
+  q:"StoreFront validates user credentials against Active Directory. Which specific Windows API does the StoreFront service use internally for this credential validation?",
+  opts:["Kerberos S4U2Self","LogonUser Win32 API","LDAP Bind on TCP 389","NTLM Challenge-Response"],
+  ans:1,
+  exp:"StoreFront uses the LogonUser Win32 API to validate user credentials against Active Directory. This API call returns a security token on success or a Windows error code on failure — allowing StoreFront to authenticate without being a domain controller."
+},
+{sec:null,sc:"s2",cp:"cp2",nc:"n2",cc:"c2",
+  q:"When Citrix Gateway performs SmartAccess authentication, it issues a specific ticket that StoreFront uses to validate the session. What is the name of this ticket?",
+  opts:["ICA Ticket","STA Ticket","OAuth Token","SAML Assertion"],
+  ans:1,
+  exp:"Citrix Gateway uses the Secure Ticket Authority (STA) to issue STA Tickets. StoreFront validates these tickets with the configured STA server to confirm the authenticated Gateway session before allowing resource enumeration and launch."
+},
+{sec:null,sc:"s2",cp:"cp2",nc:"n2",cc:"c2",
+  q:"FAS issues a virtual smartcard certificate at session launch. From which Windows CA template does FAS request this certificate by default?",
+  opts:["Kerberos Authentication","Citrix_SmartcardLogon","User","Computer"],
+  ans:1,
+  exp:"FAS uses a custom certificate template named 'Citrix_SmartcardLogon' (based on the built-in Smartcard Logon template with specific modifications). This template must be published on the Enterprise CA for FAS to function correctly."
+},
+{sec:null,sc:"s2",cp:"cp2",nc:"n2",cc:"c2",
+  q:"Which StoreFront configuration file defines the list of trusted Delivery Controllers that StoreFront uses to authenticate and enumerate resources?",
+  opts:["web.config","AuthorizeRequestModule.config","Citrix.DeliveryServicesClients.Authentication.xml","C:\\inetpub\\wwwroot\\Citrix\\StoreWeb\\web.config"],
+  ans:0,
+  exp:"StoreFront stores all site-level configuration including trusted DDC list, authentication methods, and store settings in web.config files under each Store's IIS application path. This is the primary configuration file interrogated by support during auth troubleshooting."
+},
+{sec:null,sc:"s2",cp:"cp2",nc:"n2",cc:"c2",
+  q:"During SAML authentication to Citrix Workspace, the identity provider sends a signed assertion. Which claim within the SAML assertion does Citrix Cloud use as the primary user identifier?",
+  opts:["mail","UPN (NameID)","sAMAccountName","objectGUID"],
+  ans:1,
+  exp:"Citrix Cloud uses the SAML NameID claim (typically mapped to UPN — User Principal Name) as the primary user identifier in SAML assertions. This UPN is then correlated to the Active Directory user account for resource entitlement."
+},
+{sec:null,sc:"s2",cp:"cp2",nc:"n2",cc:"c2",
+  q:"What is the default validity period of an STA ticket issued by Citrix Gateway before it expires and forces re-authentication?",
+  opts:["30 seconds","100 seconds","5 minutes","15 minutes"],
+  ans:1,
+  exp:"STA tickets have a default validity of 100 seconds. If the ICA client does not consume the ticket within this window (by connecting to the VDA), the ticket expires and the user must re-authenticate. This can be tuned on the STA server."
+},
+{sec:null,sc:"s2",cp:"cp2",nc:"n2",cc:"c2",
+  q:"Which Citrix component acts as the STA (Secure Ticket Authority) in an on-premises CVAD deployment?",
+  opts:["Citrix StoreFront","Citrix License Server","Citrix Delivery Controller XML Service","Citrix NetScaler STA Service"],
+  ans:2,
+  exp:"The Citrix Delivery Controller's XML Service hosts the STA functionality in on-premises CVAD deployments. StoreFront is configured with the STA URL pointing to the DDC's XML Service (port 80 or 443), and Citrix Gateway validates STA tickets against this endpoint."
+},
+
+/* ════ SECTION 3: ENUMERATION ════ */
+{
+  sec:"🟢 Section 3: Citrix Enumeration (Q15–Q19)",
+  sc:"s3",cp:"cp3",nc:"n3",cc:"c3",
+  q:"StoreFront communicates with the Delivery Controller to enumerate available resources for a user. Which service on the DDC responds to these enumeration requests?",
+  opts:["Citrix Broker Service","Citrix Host Service","Citrix XML Service","Citrix Monitor Service"],
+  ans:2,
+  exp:"The Citrix XML Service on the Delivery Controller processes all resource enumeration requests from StoreFront. It returns the list of published applications and desktops the authenticated user is entitled to, based on their Delivery Group memberships."
+},
+{sec:null,sc:"s3",cp:"cp3",nc:"n3",cc:"c3",
+  q:"What is the default HTTP port used by the Citrix XML Service on the Delivery Controller for StoreFront-to-DDC communication?",
+  opts:["TCP 443","TCP 8080","TCP 80","TCP 8443"],
+  ans:2,
+  exp:"The Citrix XML Service listens on TCP 80 by default for HTTP-based communication with StoreFront. For SSL-encrypted communication, it can be configured to use TCP 443. Port 8080 is used for VDA registration, not XML Service."
+},
+{sec:null,sc:"s3",cp:"cp3",nc:"n3",cc:"c3",
+  q:"A user successfully authenticates to StoreFront but sees NO resources listed. The event log shows XML Service connectivity errors. Which cmdlet verifies XML Service health on the DDC?",
+  opts:["Test-BrokerDBConnection","Get-XDService","Test-NetConnection -Port 80","Get-BrokerServiceStatus"],
+  ans:2,
+  exp:"Test-NetConnection -ComputerName DDCName -Port 80 (or 443) validates TCP-level reachability of the XML Service. This is the first network-layer check before investigating Citrix service status when StoreFront shows empty resource lists."
+},
+{sec:null,sc:"s3",cp:"cp3",nc:"n3",cc:"c3",
+  q:"Which Delivery Group setting directly controls whether a specific published application is visible in a user's StoreFront resource list during enumeration?",
+  opts:["Session Lingering","User Filter / Access Policy","Load Index Threshold","Power Management Schedule"],
+  ans:1,
+  exp:"User Filter (Access Policy) on the Delivery Group defines which AD users or groups are entitled to see and launch resources. Misconfigured user filters are the most common cause of resources not appearing during enumeration for specific users."
+},
+{sec:null,sc:"s3",cp:"cp3",nc:"n3",cc:"c3",
+  q:"StoreFront caches enumerated resource data to reduce DDC load on subsequent requests. What is the default enumeration cache timeout period?",
+  opts:["1 minute","5 minutes","30 minutes","2 hours"],
+  ans:1,
+  exp:"StoreFront caches the enumerated resource list with a default timeout of 5 minutes. After this period, StoreFront re-queries the Delivery Controller XML Service to refresh the resource list. This can be tuned via the Store configuration."
+},
+
+/* ════ SECTION 4: SESSION LAUNCH ════ */
+{
+  sec:"🔴 Section 4: Session Launch (Q20–Q25)",
+  sc:"s4",cp:"cp4",nc:"n4",cc:"c4",
+  q:"When a user clicks 'Launch' in Citrix Workspace, a file is downloaded to trigger the local Citrix Workspace App. What is the MIME type and file extension of this launch trigger file?",
+  opts:["application/octet-stream (.ica)","text/xml (.xml)","application/x-ica (.ica)","application/json (.json)"],
+  ans:2,
+  exp:"The ICA file uses MIME type 'application/x-ica' with the .ica extension. Citrix Workspace App is registered on the OS to handle this MIME type, allowing the browser to automatically hand off the launch to the installed CWA client."
+},
+{sec:null,sc:"s4",cp:"cp4",nc:"n4",cc:"c4",
+  q:"During session launch, the Delivery Controller selects a VDA using its load-balancing algorithm. What metric does the DDC use BY DEFAULT to evaluate VDA load?",
+  opts:["CPU utilization %","Session count","Load Index (0–10000)","Available RAM in MB"],
+  ans:2,
+  exp:"The DDC uses the Load Index (range 0–10000) as the primary metric for VDA selection during session brokering. 0 means no load, 10000 means fully loaded. The Load Evaluator calculates this from session count, CPU, memory, and disk metrics as configured."
+},
+{sec:null,sc:"s4",cp:"cp4",nc:"n4",cc:"c4",
+  q:"After the DDC selects a VDA for session hosting, which protocol carries the initial session negotiation between Citrix Workspace App and the VDA before the ICA session is fully established?",
+  opts:["CGP TCP 2598","ICA TCP 1494","EDT UDP 1494","HTTPS TCP 443"],
+  ans:1,
+  exp:"TCP 1494 (ICA protocol) carries the initial session negotiation handshake between Citrix Workspace App and the VDA. EDT (UDP 1494) is used if Adaptive Transport is enabled and UDP is permitted. CGP (TCP 2598) is used when Session Reliability is enabled."
+},
+{sec:null,sc:"s4",cp:"cp4",nc:"n4",cc:"c4",
+  q:"A session launch fails with error 'Cannot connect to the Citrix XenApp server'. The VDA is registered and the STA ticket is valid. Which phase is MOST likely failing?",
+  opts:["DNS resolution of VDA FQDN","STA ticket generation","User authentication to StoreFront","Delivery Group user filter"],
+  ans:0,
+  exp:"When registration and STA validation succeed but launch still fails with connection errors, DNS resolution of the VDA FQDN (as presented in the ICA file) is the most common culprit. If the client cannot resolve the VDA address, the ICA connection cannot be established."
+},
+{sec:null,sc:"s4",cp:"cp4",nc:"n4",cc:"c4",
+  q:"Which ICA file parameter defines the address of the VDA (or Gateway) that Citrix Workspace App connects to when initiating the session?",
+  opts:["Address=","ClientName=","SSLEnable=","CGPAddress="],
+  ans:0,
+  exp:"The 'Address=' parameter in the ICA file specifies the target IP address or FQDN that Citrix Workspace App connects to for the ICA session. In Gateway deployments, this points to the Gateway VIP. In direct connections, it points to the VDA."
+},
+{sec:null,sc:"s4",cp:"cp4",nc:"n4",cc:"c4",
+  q:"When a session launch goes through Citrix Gateway, which component generates the ICA file and embeds the STA ticket and Gateway address into it?",
+  opts:["Citrix Gateway itself","Delivery Controller Broker","StoreFront","Citrix Workspace App"],
+  ans:2,
+  exp:"StoreFront generates the ICA file and embeds the STA ticket, Gateway address, and session parameters before sending it to the client. The Gateway address in the ICA file replaces the direct VDA address, routing the ICA connection through the Gateway."
+}
+
+];
+
+/* ── State ── */
+let cC=0,wC=0,aC=0;
+const TOT=QS.length,LBL=['A','B','C','D'];
+
+/* ── Build ── */
+function build(){
+  const w=document.getElementById('qwrap');
+  w.innerHTML='';
+  let ls='',qn=0;
+
+  QS.forEach((q,i)=>{
+    qn++;
+    if(q.sec){
+      ls=q.sec;
+      const s=document.createElement('div');
+      s.className=`sec-ttl ${q.sc}`;
+      s.textContent=q.sec;
+      w.appendChild(s);
+    }
+
+    const card=document.createElement('div');
+    card.className=`card ${q.cc}`;
+    card.id='c'+i;
+
+    /* Diff dots */
+    let dd='';
+    for(let d=1;d<=3;d++) dd+=`<span class="dot on"></span>`;
+    const dr=`<div class="diff-row">${dd}<span class="diff-txt">🔴 Hard</span></div>`;
+
+    /* Topic pill */
+    const labels={s1:'🟠 VDA Registration',s2:'🟣 Authentication',s3:'🟢 Enumeration',s4:'🔴 Session Launch'};
+    const tp=`<span class="cpill ${q.cp}">${labels[q.sc]}</span>`;
+
+    const hdr=document.createElement('div');
+    hdr.className='q-hdr';
+    hdr.innerHTML=`<span class="q-num ${q.nc}">Q${qn}</span>
+      <div style="flex:1">${tp}${dr}<span class="q-txt">${q.q}</span></div>`;
+
+    const ow=document.createElement('div');
+    ow.className='opts';
+    q.opts.forEach((o,j)=>{
+      const b=document.createElement('button');
+      b.className='opt';b.id=`q${i}o${j}`;
+      b.innerHTML=`<span class="opt-l">${LBL[j]}</span>${o}`;
+      b.onclick=()=>pick(i,j);
+      ow.appendChild(b);
+    });
+
+    const fb=document.createElement('div');
+    fb.className='fb';fb.id='fb'+i;
+
+    card.appendChild(hdr);
+    card.appendChild(ow);
+    card.appendChild(fb);
+    w.appendChild(card);
+  });
+}
+
+/* ── Pick ── */
+function pick(qi,oi){
+  const q=QS[qi];
+  q.opts.forEach((_,k)=>{
+    document.getElementById(`q${qi}o${k}`).disabled=true;
+  });
+  const sel=document.getElementById(`q${qi}o${oi}`);
+  const cor=document.getElementById(`q${qi}o${q.ans}`);
+  const fb=document.getElementById('fb'+qi);
+  const card=document.getElementById('c'+qi);
+  aC++;
+  if(oi===q.ans){
+    sel.classList.add('correct');
+    card.classList.add('ok');
+    fb.className='fb fb-ok';
+    fb.innerHTML=`✅ <strong>Correct!</strong> — ${q.exp}`;
+    cC++;
+  } else {
+    sel.classList.add('wrong');
+    cor.classList.add('reveal');
+    card.classList.add('err');
+    fb.className='fb fb-err';
+    fb.innerHTML=`❌ <strong>Wrong.</strong> Answer: <strong>${LBL[q.ans]}) ${q.opts[q.ans]}</strong><br><br>💡 ${q.exp}`;
+    wC++;
+  }
+  hud();
+}
+
+/* ── HUD ── */
+function hud(){
+  document.getElementById('sc-c').textContent=cC;
+  document.getElementById('sc-w').textContent=wC;
+  document.getElementById('sc-r').textContent=TOT-aC;
+  const pct=aC?Math.round(cC/aC*100):0;
+  document.getElementById('sc-p').textContent=pct+'%';
+  const pp=Math.round(aC/TOT*100);
+  document.getElementById('pbar').style.width=pp+'%';
+  document.getElementById('plbl').textContent=
+    `${aC} of ${TOT} answered  •  ${pp}% complete`;
+}
+
+/* ── Results ── */
+function showRes(){
+  const p=document.getElementById('res');
+  p.style.display='block';
+  p.scrollIntoView({behavior:'smooth'});
+  const pct=Math.round(cC/TOT*100);
+  document.getElementById('fscore').textContent=`${cC} / ${TOT}`;
+  document.getElementById('rc').textContent=cC;
+  document.getElementById('rw').textContent=wC;
+  document.getElementById('rp').textContent=pct+'%';
+  let g='';
+  if(cC>=23)      g='🏆 Citrix Architect — Expert-level mastery!';
+  else if(cC>=18) g='🥈 Senior Engineer — Strong technical depth!';
+  else if(cC>=12) g='🥉 Intermediate — Review Citrix technical docs.';
+  else             g='📖 Beginner — Study Citrix fundamentals carefully.';
+  document.getElementById('fgrade').textContent=g;
+}
+
+/* ── Reset ── */
+function reset(){
+  cC=wC=aC=0;
+  document.getElementById('res').style.display='none';
+  hud();build();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+build();
+</script>
+</body>
+</html>
